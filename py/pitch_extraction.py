@@ -57,7 +57,7 @@ def track_pitch(data, Fs, N, shift):
     return ret, t_axis
 
 if __name__ == '__main__':
-    Fs, data = wio.read('../data/wav/test0.wav')
+    Fs, data = wio.read('../data/wav/doremi.wav')
     data = data[:, 0] * 0.5 + data[:, 1] * 0.5
     ch, time = track_pitch(data, Fs, 1000, 500)
     plt.figure()
