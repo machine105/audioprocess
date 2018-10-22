@@ -36,29 +36,24 @@ def sinewave_source(freqs, amps, Fs):
     return data
 
 if __name__ == '__main__':
-    # original voice
-    Fs, voice = wio.read('../data/wav/A_a.wav')
-    voice = voice.astype('float32') / 32767
-    F0 = int(pitch.pitch(voice, Fs))
+    def generate(filename, outname):
+        # original voice
+        Fs, voice = wio.read(filename)
+        voice = voice.astype('float32') / 32767
+        F0 = int(pitch.pitch(voice, Fs))
 
-    # buzzer
-    src = buzzer_source(240, Fs, 2.5).astype('float32')
-    data = np.real(np.fft.ifft(src))
-    wio.write('../data/wav/buzzer.wav', Fs, data)
-    power = np.abs(src)
-    log_power = np.array([np.log(p) if p>0 else 0 for p in power])
-    plt.figure()
-    plt.plot(log_power)
+        # buzzer
+        src = buzzer_source(440, Fs, 5.5).astype('float32')
+        data = np.real(np.fft.ifft(src))
+        wio.write('../data/wav/buzzer.wav', Fs, data)
+        power = np.abs(src)
 
-    # spectral envelope
-    vowel = spec.envelope(voice, F0, Fs)
-    plt.figure()
-    plt.plot(vowel)
+        # spectral envelope
+        vowel = spec.envelope(voice, Fs)
     
-    gen = log_power + vowel
-    plt.figure()
-    plt.plot(np.exp(gen))
-    data = np.fft.ifft(np.exp(gen))
-    wio.write('../data/wav/generated_a.wav', Fs, 10*np.real(data).astype('float32'))
+        gen = power * np.exp(vowel)
+        data = np.fft.ifft(gen)
+        wio.write(outname, Fs, np.real(data).astype('float32'))
 
-    plt.show()
+    generate('../data/wav/A_a.wav', '../data/wav/generated_a.wav')
+    generate('../data/wav/A_i.wav', '../data/wav/generated_i.wav')
