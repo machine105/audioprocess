@@ -43,7 +43,7 @@ if __name__ == '__main__':
         F0 = int(pitch.pitch(voice, Fs))
 
         # buzzer
-        src = buzzer_source(440, Fs, 5.5).astype('float32')
+        src = buzzer_source(80, Fs, 5.5).astype('float32')
         data = np.real(np.fft.ifft(src))
         wio.write('../data/wav/buzzer.wav', Fs, data)
         power = np.abs(src)
@@ -57,3 +57,4 @@ if __name__ == '__main__':
 
     generate('../data/wav/A_a.wav', '../data/wav/generated_a.wav')
     generate('../data/wav/A_i.wav', '../data/wav/generated_i.wav')
+    generate('../data/wav/A_u.wav', '../data/wav/generated_u.wav')
