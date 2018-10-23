@@ -2,7 +2,7 @@
 import scipy.io.wavfile as wio
 import matplotlib.pyplot as plt
 import numpy as np
-import spectol as spec
+import spectrum as spec
 import pitch_extraction as pitch
 
 # returns pulse train in frequency domain
