@@ -49,6 +49,7 @@ if __name__ == '__main__':
         power = np.abs(src)
 
         # spectral envelope
+        voice = spec.high_enphasis(voice)
         vowel = spec.envelope(voice, Fs)
     
         gen = power * np.exp(vowel)

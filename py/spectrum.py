@@ -20,6 +20,13 @@ def envelope(data, Fs):
     env = np.fft.fft(c)
     return env
 
+# +6 dB/oct
+def high_enphasis(data):
+    ret = np.copy(data)
+    for k in range(data.shape[0] - 1):
+        ret[k+1] = data[k+1] - 0.97 * data[k]
+    return ret
+
 if __name__ == '__main__':
     def draw_envelope(filename, **kwarg):
         Fs, data = wio.read(filename)
